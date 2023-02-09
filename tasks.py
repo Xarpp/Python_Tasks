@@ -1,6 +1,7 @@
 import datetime
 import random
 import string
+import os
 
 
 # information output
@@ -186,5 +187,59 @@ def read_last(lines, file_name):
         print("Not such file or directory!")
 
 
+def print_docs(directory, lvl=0):
+    for i in os.listdir(directory):
+        f_path = "\n" + directory + "\\" + i
+        if os.path.isdir(f_path):
+            print('\t' * (lvl+1), f_path, ":")
+            print_docs(f_path, lvl+1)
+        else:
+            print('\t' * lvl, i)
+
+
+def print_docs_var_2(directory):
+    for dir_path, dir_name, files in os.walk(directory):
+        print(dir_path)
+        for i in dir_name:
+            print(f"\t{i}")
+        for i in files:
+            print(f"\t{i}")
+
+
+def longest_words(file):
+    try:
+        with open(file, 'r', encoding="utf-8") as f:
+            word_list = (f.readlines())
+        word_index = 0
+        for i in range(len(word_list)):
+            if len(word_list[word_index]) < len(word_list[i]):
+                word_index = i
+        print(search_for_similar(word_list, word_index))
+    except FileNotFoundError:
+        print("Not such file or directory!")
+
+
+def longest_words_var_2(file):
+    try:
+        with open(file, 'r', encoding="utf-8") as f:
+            word_list = (f.readlines())
+        w_max = max(word_list, key=len)
+        print(search_for_similar(word_list, word_list.index(w_max)))
+    except FileNotFoundError:
+        print("Not such file or directory!")
+    except ValueError:
+        print("The file is empty!")
+
+
+def search_for_similar(word_list, word_index):
+    words = []
+    for i in range(len(word_list)):
+        word_list[i] = word_list[i].replace('\n', '')
+    for i in range(word_index, len(word_list)):
+        if len(word_list[word_index]) == len(word_list[i]):
+            words.append(word_list[i])
+    return words
+
+
 if __name__ == "__main__":
-    task_eighteen()
+    longest_words_var_2("C:\\Users\\Aleks\\Desktop\\Дэн\\123.txt")
